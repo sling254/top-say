@@ -26,19 +26,21 @@
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Sign in</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Sign up</a>
-                </li>                
+                {% if current_user.is_authenticated %}                        
                 <li>
-                  <a href="" class="nav-link">
+                  <a href="{{url_for('main.profile',name=current_user.username)}}" class="nav-link">
                     <img src="{{ url_for('static', filename='profileicon.png')}}" alt="" height="24" width="30" class="d-inline-block align-text-top">
-                    <caption><small>sling</small></caption>
-                  </a>
-                  
+                    <caption><small>{{current_user.username}}</small></caption>
+                  </a>                  
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('auth.logout')}}">Sign out</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('auth.login')}}">Sign in</a>
+                </li>
+                {% endif %}
               </ul>
             </div>
           </div>        
