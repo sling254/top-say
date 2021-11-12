@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content%}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <div class="login-form bg-light mt-4 p-4">
+                <form action=""method="POST">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-gruop">
+                        <legend class="border-bottom mb-4 text-center">Login In</legend>
+                        <div class="col-12">
+                            <div class="form-gruop">
+                                {{ form.email.label(class="form-control-label")}}
+                
+                                {% if form.email.errors %}
+                                    {{ form.email(class="form-control form-control-lg is-invalid")}}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.email.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                
+                                    </div>
+                                {% else %}
+                                    {{ form.email(class="form-control form-control-lg")}}
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-gruop">
+                                {{ form.password.label(class="form-control-label")}}                
+                                {% if form.password.errors %}
+                                    {{ form.password(class="form-control form-control-lg is-invalid")}}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.password.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                
+                                    </div>
+                                {% else %}
+                                    {{ form.password(class="form-control form-control-lg")}}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                {{ form.remember_me (class="form-check-input")}}
+                                {{ form.remember_me.label (class="form-check-label")}}
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                    <div class="form-gruop mt-3 mb-2">
+                    {{ form.submit(class="btn btn-outine-info btn-primary")}}
+                    </div>
+                    <small class="text-muted ml-2">
+                    <a href="#">Forgot Password ?</a>
+                    </small>       
+                        
+                    <div class="border-top pt-3">
+                    <small class="text-muted">
+                        Need Have An Account <a href="{{ url_for('auth.register')}}">Sign Up now</a>
+                    </small>
+                    </div>
+
+                </form>
+            </div>
+        
+        
+        </div>
+    </div>
+</div>
+                    
+
+
+    
+        
+        
+            
+            
+            
+  
+        
+</div>
+
+
+
+
+
+{% endblock %}
