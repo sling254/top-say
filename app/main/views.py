@@ -39,7 +39,23 @@ def updateblog(blog_id):
         form.content.data = blog.content
     return render_template('edit_blog.html', form = form)
 
+@main.route('/blog/<blog_id>/delete', methods = ['POST'])
+@login_required
+def delete_post(blog_id):
+    blog = Blog.query.get(blog_id)
+    if blog.user != current_user:
+        abort(403)
+    blog.delete()
+    return redirect(url_for('main.index'))
 
+@main.route("/blog/<int:id>/<int:comment_id>/delete")
+@login_required
+def delete_comment(id, comment_id):
+    blog = Blog.query.filter_by(id = id).first()
+    comment = Comment.query.filter_by(id = comment_id).first()
+    db.session.delete(comment)
+    db.session.commit()
+    return redirect(url_for('main.blog',id = blog.id))
 
 @main.route('/comment/<blog_id>', methods = ['Post','GET'])
 @login_required
