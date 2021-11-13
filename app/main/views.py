@@ -1,8 +1,8 @@
 from flask import render_template, redirect,url_for,abort,request
 from . import main
 from flask_login import login_required,current_user
-from .forms import UpdateProfile, CreateBlog 
-from ..models import User, Blog, Comment
+from .forms import UpdateProfile, CreateBlog, SubscriberForm
+from ..models import User, Blog, Comment, Subscriber
 from ..requests import get_quote
 from ..import db, photos
 import secrets
@@ -10,11 +10,21 @@ import os
 from ..email import mail_message
 
 
-@main.route('/')
+@main.route('/', methods = ['POST', 'GET'])
 def index():
+    form = SubscriberForm()
+    if form.validate_on_submit():
+        email=form.email.data
+        subscriber = Subscriber(email=email)
+        db.session.add(subscriber)
+        db.session.commit()
+        return redirect('index.html')
+    else:
+        print("i failed to validate")
+
     quote = get_quote()
     blogs = Blog.query.order_by(Blog.time.desc())
-    return render_template('index.html', blogs=blogs, quote=quote)
+    return render_template('index.html', blogs=blogs, quote=quote, form=form)
 
 @main.route('/blog/<id>')
 @login_required
@@ -74,6 +84,7 @@ def comment(blog_id):
 @main.route('/new_post', methods=['POST','GET'])
 @login_required
 def new_blog():
+    subscribers = Subscriber.query.all()
     form = CreateBlog()
     if form.validate_on_submit():
         title = form.title.data
@@ -82,6 +93,8 @@ def new_blog():
         user_id =  current_user._get_current_object().id
         blog = Blog(title=title,description = description, content=content,user_id=user_id)
         blog.save()
+        for subscriber in subscribers:
+            mail_message("New Blog Post","email/new_blog",subscriber.email,blog=blog)
         return redirect(url_for('main.index'))
     return render_template('post.html', form = form)
 
@@ -114,3 +127,5 @@ def updateprofile(name):
         form.email.data = current_user.email
         form.bio.data = current_user.bio
     return render_template('profile/update.html', user = user, form =form)
+
+

@@ -8,9 +8,11 @@
             <blockquote> "{{quote.quote}}" </blockquote>
         </div>
         <div class="row justify-content-md-center">
-            <form class="d-flex mt-4">
-                <input class="form-control me-2"  placeholder="info@gmail.com">
-                <button class="btn btn-success" type="submit">Subscribe</button>
+            <form class="d-flex mt-4" method="POST">
+                {{ form.hidden_tag() }}
+                {{ form.email(class="form-control me-2",  placeholder="info@gmail.com")}}
+                {{ form.submit(class="btn btn-success")}}
+                
             </form>
         </div>
     </div>        
@@ -23,42 +25,8 @@
     <div class="container">
         <h1 class="text-center mt-3">Recent Blogs</h1>
         <div class="row">
-            <div class="col">
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                        <img src="https://random.imagecdn.app/200/200" class="img-fluid rounded-start" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Life Style</h5>
-                            <p class="card-text">We only live once...yolo</p>
-                            <p class="card-footer"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                        <img src="https://random.imagecdn.app/100/100" class="img-fluid rounded-start" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Life Style</h5>
-                            <p class="card-text">We only live once...yolo</p>
-                            <p class="card-footer"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> 
-        <div class="row">
             {% for blog in blogs %}
-            <div class="col">
+            <div class="col-md-6">
                 <div class="card mb-3" style="max-width: 540px;">
                     <div class="row g-0">
                         <div class="col-md-4">

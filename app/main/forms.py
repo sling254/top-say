@@ -3,7 +3,9 @@ from flask_wtf.file import FileField,FileAllowed
 from wtforms import StringField,TextAreaField, SubmitField,ValidationError
 from wtforms.validators import Required,Email
 from flask_login import current_user
-from ..models import User
+
+from app import email
+from ..models import Subscriber, User
 
 class UpdateProfile(FlaskForm):
   username = StringField('Enter Your Username', validators=[Required()])
@@ -26,3 +28,9 @@ class CreateBlog(FlaskForm):
   description = TextAreaField('Blog Description',validators=[Required()])
   content = TextAreaField('Blog Content',validators=[Required()])
   submit = SubmitField('Post')
+
+
+class SubscriberForm(FlaskForm):
+  email = StringField('Email Address', validators=[Required(),Email()])
+  submit = SubmitField('Subscribe')
+
