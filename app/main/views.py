@@ -8,19 +8,24 @@ from ..import db, photos
 import secrets
 import os
 from ..email import mail_message
+from app import email
 
 
 @main.route('/', methods = ['POST', 'GET'])
 def index():
     form = SubscriberForm()
+    semail = Subscriber.query.filter_by(email=form.email.data).first()
+    print(semail)
+    email = form.email.data         
     if form.validate_on_submit():
-        email=form.email.data
-        subscriber = Subscriber(email=email)
-        db.session.add(subscriber)
-        db.session.commit()
+        email = form.email.data 
+        if email == semail:
+            return redirect('index.html')
+        else:
+            subscriber = Subscriber(email=email)
+            db.session.add(subscriber)
+            db.session.commit()
         return redirect('index.html')
-    else:
-        print("i failed to validate")
 
     quote = get_quote()
     blogs = Blog.query.order_by(Blog.time.desc())

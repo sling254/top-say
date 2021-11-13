@@ -27,7 +27,12 @@
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
-                {% if current_user.is_authenticated %}                        
+                {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link"href="{{url_for('main.new_blog')}}">
+                    <button type="button" class="btn btn-outline-primary">Post Now</button>
+                  </a>
+                </li>                        
                 <li>
                   <a href="{{url_for('main.profile',name=current_user.username)}}" class="nav-link">
                     <img src="{{ url_for('static', filename='profileicon.png')}}" alt="" height="24" width="30" class="d-inline-block align-text-top">
