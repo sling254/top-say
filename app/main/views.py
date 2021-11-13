@@ -3,15 +3,18 @@ from . import main
 from flask_login import login_required,current_user
 from .forms import UpdateProfile, CreateBlog 
 from ..models import User, Blog, Comment
+from ..requests import get_quote
 from ..import db, photos
 import secrets
 import os
 from ..email import mail_message
 
+
 @main.route('/')
 def index():
+    quote = get_quote()
     blogs = Blog.query.order_by(Blog.time.desc())
-    return render_template('index.html', blogs=blogs)
+    return render_template('index.html', blogs=blogs, quote=quote)
 
 @main.route('/blog/<id>')
 @login_required
