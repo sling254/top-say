@@ -2,7 +2,7 @@ from flask import render_template, redirect,url_for,abort,request
 from . import main
 from flask_login import login_required,current_user
 from .forms import UpdateProfile, CreateBlog 
-from ..models import User, Blog
+from ..models import User, Blog, Comment
 from ..import db, photos
 import secrets
 import os
@@ -10,9 +10,45 @@ from ..email import mail_message
 
 @main.route('/')
 def index():
+    blogs = Blog.query.order_by(Blog.time.desc())
+    return render_template('index.html', blogs=blogs)
 
-    return render_template('index.html')
+@main.route('/blog/<id>')
+@login_required
+def blog(id):
+    comments = Comment.query.filter_by(blog_id=id).all()
+    blog = Blog.query.get(id)
+    return render_template('blog_page.html',blog=blog,comments=comments)
 
+@main.route('/blog/<blog_id>/update', methods = ['GET','POST'])
+@login_required
+def updateblog(blog_id):
+    blog = Blog.query.get(blog_id)
+    if blog.user != current_user:
+        abort(403)
+    form = CreateBlog()
+    if form.validate_on_submit():
+        blog.title = form.title.data
+        blog.description = form.description.data
+        blog.content = form.content.data
+        db.session.commit()
+        return redirect(url_for('main.blog',id = blog.id)) 
+    if request.method == 'GET':
+        form.title.data = blog.title
+        form.description.data = blog.description
+        form.content.data = blog.content
+    return render_template('edit_blog.html', form = form)
+
+
+
+@main.route('/comment/<blog_id>', methods = ['Post','GET'])
+@login_required
+def comment(blog_id):
+    blog = Blog.query.get(blog_id)
+    comment =request.form.get('newcomment')
+    new_comment = Comment(comment = comment, user_id = current_user._get_current_object().id, blog_id=blog_id)
+    new_comment.save()
+    return redirect(url_for('main.blog',id = blog.id))
 
 
 

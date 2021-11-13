@@ -56,6 +56,27 @@
                 </div>
             </div>
         </div> 
+        <div class="row">
+            {% for blog in blogs %}
+            <div class="col">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                        <img src="https://random.imagecdn.app/200/200" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ blog.title | upper }}</h5>
+                            <p class="card-text">{{blog.description}}</p>
+                            <p class="card-footer"><small class="text-muted">Date updated{{blog.time.strftime('%d-%m-%Y')}}</small></p>
+                            <span>{{blog.comment.count()}} <i class="fas fa-comment"></i> <a href="{{url_for('main.comment',blog_id = blog.id)}}">Add Comment</a></span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
 <!-- End of blog body -->
