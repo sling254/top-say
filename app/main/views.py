@@ -11,7 +11,7 @@ from ..email import mail_message
 from app import email
 
 
-@main.route('/')
+@main.route('/',methods = ['GET','POST'])
 def index():
     form = SubscriberForm()
     email = form.email.data         
@@ -20,7 +20,6 @@ def index():
         subscriber = Subscriber(email=email)
         db.session.add(subscriber)
         db.session.commit()
-        return redirect('index.html')
 
     quote = get_quote()
     blogs = Blog.query.order_by(Blog.time.desc())
