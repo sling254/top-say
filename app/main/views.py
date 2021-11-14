@@ -11,7 +11,7 @@ from ..email import mail_message
 from app import email
 
 
-@main.route('/', methods = ['POST', 'GET'])
+@main.route('/', methods=['POST','GET'])
 def index():
     form = SubscriberForm()
     email = form.email.data         
