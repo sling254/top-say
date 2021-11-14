@@ -21,9 +21,9 @@ def index():
         db.session.add(subscriber)
         db.session.commit()
 
-    quote = get_quote()
+    #quote = get_quote()
     blogs = Blog.query.order_by(Blog.time.desc())
-    return render_template('index.html', blogs=blogs, quote=quote, form=form)
+    return render_template('index.html', blogs=blogs, form=form)
 
 @main.route('/blog/<id>')
 @login_required
